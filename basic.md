@@ -177,3 +177,66 @@ console.log(path.parse(__filename));
 }
  */
 ```
+
+### crypto
+
+---
+
+단방향 암호화의 대표 주자는 **해시 기법**
+
+<br/>
+
+## fs
+
+---
+
+파일시스템에 접근하는 모듈
+
+```js
+const fs = require("fs");
+
+fs.promises
+  .readFile("./readme.txt")
+  .then((data) => console.log(data.toString()))
+  .catch((err) => {
+    throw err;
+  });
+```
+
+> 프로미스로 사용이 가능하다.
+
+```js
+fs.promises
+  .writeFile("./readme.txt", "글이 입력됩니다")
+  .then(() => {
+    return fs.promises.readFile("./readme.txt");
+  })
+  .then((data) => console.log(data.toString()))
+  .catch((err) => console.log(err));
+```
+
+프로미스 체이닝을 이용하여 읽고 쓰기
+
+비동기 -> 논블로킹
+
+동기 -> 블로킹
+
+서버에서는 대부분의 요청이 비동기로 처리된다.
+
+```js
+const fs = require("fs").promises;
+
+async function main() {
+  let data = await fs.readFile("./readme.txt");
+  console.log("1번", data.toString());
+  data = await fs.readFile("./readme.txt");
+  console.log("2번", data.toString());
+  data = await fs.readFile("./readme.txt");
+  console.log("3번", data.toString());
+  data = await fs.readFile("./readme.txt");
+  console.log("4번", data.toString());
+}
+main();
+```
+
+async-await을 이용하면 비동기처리를 순서대로 동작하게 짧은 코드로 작성할 수 있다
